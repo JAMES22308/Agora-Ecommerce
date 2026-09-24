@@ -153,3 +153,24 @@ JOIN businesses
 SELECT *
 FROM products
 WHERE product_name LIKE '%Chicken%';
+
+
+
+-- complex testing
+SELECT
+    businesses.business_name,
+    users.full_name AS seller,
+    COUNT(products.product_id) AS total_products,
+    SUM(products.quantity) AS total_stock,
+    AVG(products.price) AS average_price
+FROM products
+JOIN users
+    ON products.seller_id = users.user_id
+JOIN businesses
+    ON users.business_id = businesses.business_id
+GROUP BY
+    businesses.business_id,
+    businesses.business_name,
+    users.user_id,
+    users.full_name
+ORDER BY average_price DESC;
