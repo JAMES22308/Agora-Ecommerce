@@ -1,3 +1,4 @@
+```php
 <?php
 
 session_start();
@@ -14,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    // Find the user using their email
+    // Find the user from the database
     $sql = "SELECT * FROM users WHERE email = ?";
 
     $stmt = $conn->prepare($sql);
@@ -29,8 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $user = $result->fetch_assoc();
 
-        // Check the password
-        if (password_verify($password, $user["password"])) {
+        // Check the password stored in the database
+        if ($password == $user["password"]) {
 
             $_SESSION["user_id"] = $user["user_id"];
             $_SESSION["full_name"] = $user["full_name"];
@@ -105,3 +106,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
+```
