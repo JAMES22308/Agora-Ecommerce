@@ -1,0 +1,143 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f7f9fc;
+    color: #333;
+}
+
+
+/* Header */
+
+header {
+    background-color: #4f46e5;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 38px;
+}
+
+header p {
+    margin: 8px 0 20px;
+    font-size: 17px;
+}
+
+
+/* Navigation */
+
+nav {
+    margin-top: 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 12px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+/* Main */
+
+main {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+main h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+main > p {
+    font-size: 17px;
+}
+
+
+/* Search */
+
+form {
+    background-color: white;
+    max-width: 600px;
+    margin: 35px auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+input {
+    width: 60%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    padding: 12px 20px;
+    margin-left: 5px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3730a3;
+}
+
+
+/* Browse Products */
+
+main > p:last-child a {
+    display: inline-block;
+    background-color: #4f46e5;
+    color: white;
+    text-decoration: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+main > p:last-child a:hover {
+    background-color: #3730a3;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    input {
+        width: 90%;
+        margin-bottom: 10px;
+    }
+
+    button {
+        margin-left: 0;
+    }
+
+    main {
+        margin: 30px auto;
+    }
+
+}
+

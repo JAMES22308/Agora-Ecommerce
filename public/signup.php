@@ -1,3 +1,4 @@
+```php
 <?php
 
 require_once "../config/database.php";
@@ -46,67 +47,134 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
 
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Sign Up - Agora</title>
+
+    <link rel="stylesheet" href="signup.css">
 
 </head>
 
 <body>
 
-    <h1>Create an Agora Account</h1>
+    <header>
 
-    <?php
+        <h1>Agora</h1>
 
-    if ($message != "") {
-        echo "<p>" . $message . "</p>";
-    }
+        <p>Digital Marketplace</p>
 
-    ?>
+    </header>
 
-    <form method="POST">
 
-        <label>Full Name:</label>
-        <input type="text" name="full_name" required>
+    <main>
 
-        <br><br>
+        <section class="signup-card">
 
-        <label>Email:</label>
-        <input type="email" name="email" required>
+            <h2>Create an Agora Account</h2>
 
-        <br><br>
 
-        <label>Password:</label>
-        <input type="password" name="password" required>
+            <?php
 
-        <br><br>
+            if ($message != "") {
 
-        <label>Account Type:</label>
+                echo "<p class='message'>" .
+                     htmlspecialchars($message) .
+                     "</p>";
 
-        <select name="role" required>
+            }
 
-            <option value="buyer">Buyer</option>
+            ?>
 
-            <option value="seller">Seller</option>
 
-            <option value="business_admin">
-                Business Account Admin
-            </option>
+            <form method="POST">
 
-        </select>
+                <label for="full_name">
+                    Full Name:
+                </label>
 
-        <br><br>
+                <input
+                    type="text"
+                    id="full_name"
+                    name="full_name"
+                    required
+                >
 
-        <button type="submit">Create Account</button>
 
-    </form>
+                <label for="email">
+                    Email:
+                </label>
 
-    <br>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                >
 
-    <a href="login.php">Already have an account? Log in</a>
 
-    <br><br>
+                <label for="password">
+                    Password:
+                </label>
 
-    <a href="index.php">Back to Agora</a>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                >
+
+
+                <label for="role">
+                    Account Type:
+                </label>
+
+                <select
+                    id="role"
+                    name="role"
+                    required
+                >
+
+                    <option value="buyer">
+                        Buyer
+                    </option>
+
+                    <option value="seller">
+                        Seller
+                    </option>
+
+                    <option value="business_admin">
+                        Business Account Admin
+                    </option>
+
+                </select>
+
+
+                <button type="submit">
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <div class="links">
+
+                <a href="login.php">
+                    Already have an account? Log in
+                </a>
+
+                <a href="index.php">
+                    Back to Agora
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 
 </html>
+

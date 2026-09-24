@@ -1,3 +1,4 @@
+```php
 <?php
 
 $storeName = "Agora";
@@ -7,24 +8,37 @@ $tagline = "Digital Marketplace";
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title><?= $storeName ?></title>
+
+    <link rel="stylesheet" href="index.css">
+
 </head>
 
 <body>
 
     <header>
+
         <h1><?= $storeName ?></h1>
+
         <p><?= $tagline ?></p>
 
         <nav>
+
             <a href="login.php">Login</a>
+
             <a href="signup.php">Sign Up</a>
+
         </nav>
+
     </header>
+
 
     <main>
 
@@ -34,7 +48,10 @@ $tagline = "Digital Marketplace";
             Find products from businesses across the marketplace.
         </p>
 
-        <form action="pages/search.php" method="GET">
+
+        <!-- Search products from the database -->
+
+        <form action="../pages/search.php" method="GET">
 
             <label for="search">Search products:</label>
 
@@ -49,11 +66,18 @@ $tagline = "Digital Marketplace";
 
         </form>
 
+
         <p>
-            <a href="pages/products.php">Browse Products</a>
+
+            <a href="../pages/products.php">
+                Browse Products
+            </a>
+
         </p>
 
     </main>
 
 </body>
+
 </html>
+```

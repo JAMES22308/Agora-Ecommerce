@@ -1,0 +1,149 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f7f9fc;
+    color: #333;
+}
+
+
+/* Header */
+
+header {
+    background-color: #4f46e5;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 6px 0 0;
+    font-size: 15px;
+}
+
+
+/* Main content */
+
+main {
+    max-width: 800px;
+    margin: 45px auto;
+    padding: 0 20px;
+}
+
+
+/* Welcome card */
+
+.welcome {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.welcome h2 {
+    margin-top: 0;
+    font-size: 26px;
+}
+
+.welcome p {
+    font-size: 16px;
+}
+
+
+/* Role card */
+
+.role-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.role-box h2 {
+    margin-top: 0;
+    color: #4f46e5;
+    font-size: 24px;
+}
+
+.role-box h3 {
+    margin-top: 30px;
+}
+
+
+/* Options */
+
+.options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+
+/* Buttons */
+
+.option {
+    display: block;
+    background-color: #4f46e5;
+    color: white;
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.option:hover {
+    background-color: #3730a3;
+    transform: translateY(-2px);
+}
+
+
+.bottom-links {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.bottom-links a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.bottom-links a:hover {
+    text-decoration: underline;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    main {
+        margin: 25px auto;
+    }
+
+    .welcome,
+    .role-box {
+        padding: 22px;
+    }
+
+    .options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .option {
+        width: 80%;
+    }
+}

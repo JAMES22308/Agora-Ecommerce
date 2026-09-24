@@ -1,0 +1,135 @@
+
+/* Agora Products Page */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f7f9fc;
+    color: #333;
+}
+
+
+/* Header */
+
+header {
+    background-color: #4f46e5;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+header p {
+    margin: 6px 0 0;
+}
+
+
+/* Main */
+
+main {
+    max-width: 800px;
+    margin: 45px auto;
+    padding: 0 20px;
+}
+
+main h2 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+
+/* Home link */
+
+.home-link {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.home-link a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.home-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* Divider */
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 25px 0;
+}
+
+
+/* Product cards */
+
+.product-card {
+    background-color: white;
+    padding: 25px;
+    margin: 20px 0;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.product-card h3 {
+    margin-top: 0;
+    color: #4f46e5;
+    font-size: 23px;
+}
+
+.product-card p {
+    margin: 10px 0;
+}
+
+
+/* View Product button */
+
+.view-product {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 20px;
+    background-color: #4f46e5;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.view-product:hover {
+    background-color: #3730a3;
+}
+
+
+/* No products */
+
+.no-products {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    main {
+        margin: 30px auto;
+    }
+
+    .product-card {
+        padding: 20px;
+    }
+
+}
+

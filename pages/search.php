@@ -1,3 +1,4 @@
+
 <?php
 
 require_once "../config/database.php";
@@ -8,9 +9,7 @@ $conn = $database->connection;
 $search = "";
 
 if (isset($_GET["search"])) {
-
     $search = $_GET["search"];
-
 }
 
 ?>
@@ -20,88 +19,144 @@ if (isset($_GET["search"])) {
 
 <head>
 
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Search - Agora</title>
+
+    <link rel="stylesheet" href="search.css">
 
 </head>
 
 <body>
 
-    <h1>Search Agora Products</h1>
+    <header>
 
-    <form method="GET">
+        <h1>Agora</h1>
 
-        <label>Search:</label>
+        <p>Digital Marketplace</p>
 
-        <input
-            type="text"
-            name="search"
-            value="<?= $search ?>"
-        >
+    </header>
 
-        <button type="submit">Search</button>
 
-    </form>
+    <main>
 
-    <br>
+        <h2>Search Agora Products</h2>
 
-    <a href="products.php">View All Products</a>
 
-    <hr>
+        <form method="GET">
 
-    <?php
+            <label for="search">Search:</label>
 
-    if ($search != "") {
+            <input
+                type="text"
+                id="search"
+                name="search"
+                value="<?= htmlspecialchars($search) ?>"
+                placeholder="Search for a product"
+            >
 
-        $searchValue = "%" . $search . "%";
+            <button type="submit">
+                Search
+            </button>
 
-        $sql = "SELECT * FROM products
-                WHERE product_name LIKE ?";
+        </form>
 
-        $stmt = $conn->prepare($sql);
 
-        $stmt->bind_param("s", $searchValue);
+        <p>
 
-        $stmt->execute();
+            <a class="products-link" href="products.php">
+                View All Products
+            </a>
 
-        $result = $stmt->get_result();
+        </p>
 
-        if ($result->num_rows > 0) {
 
-            while ($product = $result->fetch_assoc()) {
+        <hr>
 
-                echo "<h2>" . htmlspecialchars($product["product_name"]) . "</h2>";
 
-                echo "<p>";
-                echo htmlspecialchars($product["description"]);
-                echo "</p>";
+        <?php
 
-                echo "<p>";
-                echo "Price: $" . $product["price"];
-                echo "</p>";
+        if ($search != "") {
 
-                echo "<p>";
-                echo "Available: " . $product["quantity"];
-                echo "</p>";
+            $searchValue = "%" . $search . "%";
 
-                echo "<hr>";
+            $sql = "SELECT *
+                    FROM products
+                    WHERE product_name LIKE ?";
+
+            $stmt = $conn->prepare($sql);
+
+            $stmt->bind_param("s", $searchValue);
+
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+
+
+            if ($result->num_rows > 0) {
+
+                while ($product = $result->fetch_assoc()) {
+
+                    ?>
+
+                    <section class="product-card">
+
+                        <h3>
+                            <?= htmlspecialchars($product["product_name"]) ?>
+                        </h3>
+
+                        <p>
+                            <?= htmlspecialchars($product["description"]) ?>
+                        </p>
+
+                        <p>
+                            <strong>Price:</strong>
+                            $<?= htmlspecialchars($product["price"]) ?>
+                        </p>
+
+                        <p>
+                            <strong>Available:</strong>
+                            <?= htmlspecialchars($product["quantity"]) ?>
+                        </p>
+
+                    </section>
+
+                    <?php
+
+                }
+
+            } else {
+
+                ?>
+
+                <p class="no-results">
+                    No products found.
+                </p>
+
+                <?php
+
             }
 
-        } else {
-
-            echo "<p>No products found.</p>";
+            $stmt->close();
 
         }
 
-        $stmt->close();
+        ?>
 
-    }
 
-    ?>
+        <div class="bottom-link">
 
-    <br>
+            <a href="../public/index.php">
+                Back to Agora
+            </a>
 
-    <a href="../public/index.php">Back to Agora</a>
+        </div>
+
+    </main>
 
 </body>
 
 </html>
+

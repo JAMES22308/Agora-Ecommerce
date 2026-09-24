@@ -1,3 +1,4 @@
+```php
 <?php
 
 require_once "../config/database.php";
@@ -16,57 +17,100 @@ $result = $conn->query($sql);
 
 <head>
 
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Products - Agora</title>
+
+    <link rel="stylesheet" href="products.css">
 
 </head>
 
 <body>
 
-    <h1>Agora Products</h1>
+    <header>
 
-    <p>
-        <a href="../public/index.php">Home</a>
-    </p>
+        <h1>Agora</h1>
 
-    <hr>
+        <p>Digital Marketplace</p>
 
-    <?php
+    </header>
 
-    if ($result->num_rows > 0) {
 
-        while ($product = $result->fetch_assoc()) {
+    <main>
 
-            echo "<h2>";
-            echo htmlspecialchars($product["product_name"]);
-            echo "</h2>";
+        <h2>Agora Products</h2>
 
-            echo "<p>";
-            echo htmlspecialchars($product["description"]);
-            echo "</p>";
 
-            echo "<p>";
-            echo "Price: $" . $product["price"];
-            echo "</p>";
+        <div class="home-link">
 
-            echo "<p>";
-            echo "Available: " . $product["quantity"];
-            echo "</p>";
+            <a href="../public/index.php">
+                Home
+            </a>
 
-            echo "<a href='product.php?id=" . $product["product_id"] . "'>";
-            echo "View Product";
-            echo "</a>";
+        </div>
 
-            echo "<hr>";
+
+        <hr>
+
+
+        <?php
+
+        if ($result->num_rows > 0) {
+
+            while ($product = $result->fetch_assoc()) {
+
+                ?>
+
+                <section class="product-card">
+
+                    <h3>
+                        <?= htmlspecialchars($product["product_name"]) ?>
+                    </h3>
+
+                    <p>
+                        <?= htmlspecialchars($product["description"]) ?>
+                    </p>
+
+                    <p>
+                        <strong>Price:</strong>
+                        $<?= htmlspecialchars($product["price"]) ?>
+                    </p>
+
+                    <p>
+                        <strong>Available:</strong>
+                        <?= htmlspecialchars($product["quantity"]) ?>
+                    </p>
+
+                    <a class="view-product"
+                       href="product.php?id=<?= $product["product_id"] ?>">
+                        View Product
+                    </a>
+
+                </section>
+
+                <?php
+
+            }
+
+        } else {
+
+            ?>
+
+            <p class="no-products">
+                No products found.
+            </p>
+
+            <?php
+
         }
 
-    } else {
+        ?>
 
-        echo "<p>No products found.</p>";
-
-    }
-
-    ?>
+    </main>
 
 </body>
 
 </html>
+```

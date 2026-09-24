@@ -1,8 +1,8 @@
+```php
 <?php
 
 session_start();
 
-// Check if the user is logged in
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
     exit;
@@ -18,64 +18,179 @@ $role = $_SESSION["role"];
 
 <head>
 
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dashboard - Agora</title>
+
+    <link rel="stylesheet" href="dashboard.css">
 
 </head>
 
 <body>
 
-    <h1>Welcome to Agora</h1>
+<header>
 
-    <p>
-        Hello, <?= $fullName ?>!
-    </p>
+    <h1>Agora</h1>
 
-    <p>
-        Your role is: <?= $role ?>
-    </p>
+    <p>Digital Marketplace</p>
 
-    <hr>
+</header>
 
-    <?php
 
-    if ($role == "agora_admin") {
+<main>
 
-        echo "<h2>Agora Master Admin</h2>";
-        echo "<p>You can manage the Agora marketplace.</p>";
+    <section class="welcome">
 
-    } elseif ($role == "business_admin") {
+        <h2>Welcome back, <?= htmlspecialchars($fullName) ?>!</h2>
 
-        echo "<h2>Business Account Administrator</h2>";
-        echo "<p>You can manage your business account and users.</p>";
+        <p>
+            Account Type:
+            <strong><?= htmlspecialchars($role) ?></strong>
+        </p>
 
-    } elseif ($role == "seller") {
+    </section>
 
-        echo "<h2>Seller</h2>";
-        echo "<p>You can manage your products and listings.</p>";
 
-    } elseif ($role == "buyer") {
+    <section class="role-box">
 
-        echo "<h2>Buyer</h2>";
-        echo "<p>You can browse, search and purchase products.</p>";
+        <?php
 
-    } else {
+        if ($role == "agora_admin") {
+            ?>
 
-        echo "<p>Unknown account type.</p>";
+            <h2>Agora Master Admin</h2>
 
-    }
+            <p>
+                You can manage the Agora marketplace.
+            </p>
 
-    ?>
+            <h3>Admin Options</h3>
 
-    <hr>
+            <div class="options">
 
-    <p>
-        <a href="index.php">Back to Agora</a>
-    </p>
+                <a class="option" href="../pages/admin_dashboard.php">
+                    Manage Agora
+                </a>
 
-    <p>
-        <a href="logout.php">Logout</a>
-    </p>
+            </div>
+
+            <?php
+
+        } elseif ($role == "business_admin") {
+            ?>
+
+            <h2>Business Account Administrator</h2>
+
+            <p>
+                Manage your business account, users and products.
+            </p>
+
+            <h3>Business Options</h3>
+
+            <div class="options">
+
+                <a class="option" href="../pages/business_users.php">
+                    Manage Business Users
+                </a>
+
+                <a class="option" href="../pages/business_information.php">
+                    Business Information
+                </a>
+
+                <a class="option" href="../pages/business_products.php">
+                    View Business Products
+                </a>
+
+            </div>
+
+            <?php
+
+        } elseif ($role == "seller") {
+            ?>
+
+            <h2>Seller</h2>
+
+            <p>
+                You can manage your products and listings.
+            </p>
+
+            <h3>Seller Options</h3>
+
+            <div class="options">
+
+                <a class="option" href="../pages/my_products.php">
+                    My Products
+                </a>
+
+                <a class="option" href="../pages/add_product.php">
+                    Add Product
+                </a>
+
+            </div>
+
+            <?php
+
+        } elseif ($role == "buyer") {
+            ?>
+
+            <h2>Buyer</h2>
+
+            <p>
+                You can browse, search and purchase products.
+            </p>
+
+            <h3>Buyer Options</h3>
+
+            <div class="options">
+
+                <a class="option" href="../pages/products.php">
+                    Browse Products
+                </a>
+
+                <a class="option" href="../pages/search.php">
+                    Search Products
+                </a>
+
+                <a class="option" href="../pages/my_orders.php">
+                    My Orders
+                </a>
+
+            </div>
+
+            <?php
+
+        } else {
+
+            ?>
+
+            <p>Unknown account type.</p>
+
+            <?php
+
+        }
+
+        ?>
+
+    </section>
+
+
+    <div class="bottom-links">
+
+        <a href="index.php">
+            Back to Agora
+        </a>
+
+        <a href="logout.php">
+            Logout
+        </a>
+
+    </div>
+
+</main>
 
 </body>
 
 </html>
+```

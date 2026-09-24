@@ -63,45 +63,93 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
 
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login - Agora</title>
+
+    <link rel="stylesheet" href="login.css">
 
 </head>
 
 <body>
 
-    <h1>Login to Agora</h1>
+    <header>
 
-    <?php
+        <h1>Agora</h1>
 
-    if ($message != "") {
-        echo "<p>" . $message . "</p>";
-    }
+        <p>Digital Marketplace</p>
 
-    ?>
+    </header>
 
-    <form method="POST">
 
-        <label>Email:</label>
-        <input type="email" name="email" required>
+    <main>
 
-        <br><br>
+        <section class="login-card">
 
-        <label>Password:</label>
-        <input type="password" name="password" required>
+            <h2>Login to Agora</h2>
 
-        <br><br>
 
-        <button type="submit">Login</button>
+            <?php
 
-    </form>
+            if ($message != "") {
 
-    <br>
+                echo "<p class='message'>" . htmlspecialchars($message) . "</p>";
 
-    <a href="signup.php">Create an account</a>
+            }
 
-    <br><br>
+            ?>
 
-    <a href="index.php">Back to Agora</a>
+
+            <form method="POST">
+
+                <label for="email">
+                    Email:
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                >
+
+
+                <label for="password">
+                    Password:
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                >
+
+
+                <button type="submit">
+                    Login
+                </button>
+
+            </form>
+
+
+            <div class="links">
+
+                <a href="signup.php">
+                    Create an account
+                </a>
+
+                <a href="index.php">
+                    Back to Agora
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 
