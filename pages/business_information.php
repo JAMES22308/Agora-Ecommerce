@@ -1,40 +1,97 @@
-```php
+
 <?php
 
-session_start();
-
+require_once "../includes/auth.php";
 require_once "../config/database.php";
+
+requireRole(["business_admin"]);
 
 $database = new Database();
 $conn = $database->connection;
 
-if (!isset($_SESSION["user_id"])) {
-    header("Location: ../public/login.php");
-    exit;
+$businessId = (int) ($_SESSION["business_id"] ?? 0);
+$message = "";
+$messageType = "";
+
+// Check business association
+if ($businessId <= 0) {
+    http_response_code(403);
+    exit("No business is associated with this account.");
 }
 
-if ($_SESSION["role"] != "business_admin") {
-    echo "Only Business Account Administrators can access this page.";
-    exit;
+// Create CSRF token
+if (empty($_SESSION["csrf_token"])) {
+    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
 }
 
-$businessId = $_SESSION["business_id"];
+// Handle business name update
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-$sql = "SELECT *
+    $token = $_POST["csrf_token"] ?? "";
+
+    if (!hash_equals($_SESSION["csrf_token"], $token)) {
+
+        $message = "Invalid form submission. Please try again.";
+        $messageType = "error";
+
+    } else {
+
+        $businessName = trim($_POST["business_name"] ?? "");
+
+        if ($businessName === "") {
+
+            $message = "Business name cannot be empty.";
+            $messageType = "error";
+
+        } elseif (strlen($businessName) > 100) {
+
+            $message = "Business name cannot exceed 100 characters.";
+            $messageType = "error";
+
+        } else {
+
+            $sql = "UPDATE businesses
+                    SET business_name = ?
+                    WHERE business_id = ?";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("si", $businessName, $businessId);
+
+            if ($stmt->execute()) {
+
+                $message = "Business information updated successfully!";
+                $messageType = "success";
+
+            } else {
+
+                $message = "Unable to update business information.";
+                $messageType = "error";
+
+            }
+
+            $stmt->close();
+        }
+    }
+}
+
+// Retrieve current business information
+$sql = "SELECT business_id, business_name
         FROM businesses
         WHERE business_id = ?";
 
 $stmt = $conn->prepare($sql);
-
 $stmt->bind_param("i", $businessId);
-
 $stmt->execute();
 
 $result = $stmt->get_result();
-
 $business = $result->fetch_assoc();
 
 $stmt->close();
+
+if (!$business) {
+    http_response_code(404);
+    exit("Business information could not be found.");
+}
 
 ?>
 
@@ -44,6 +101,8 @@ $stmt->close();
 <head>
 
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Business Information - Agora</title>
 
@@ -61,45 +120,53 @@ $stmt->close();
 
 </header>
 
-
 <main>
 
     <section class="welcome">
 
         <h2>Business Information</h2>
 
-        <?php
-
-        if ($business) {
-
-            ?>
+        <?php if ($message !== "") { ?>
 
             <p>
-                <strong>Business Name:</strong>
-                <?= htmlspecialchars($business["business_name"]) ?>
+                <?= htmlspecialchars($message) ?>
             </p>
 
-            <p>
-                <strong>Business ID:</strong>
-                <?= htmlspecialchars($business["business_id"]) ?>
-            </p>
+        <?php } ?>
 
-            <?php
+        <p>
+            <strong>Business ID:</strong>
+            <?= htmlspecialchars((string) $business["business_id"]) ?>
+        </p>
 
-        } else {
+        <form method="POST">
 
-            ?>
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= htmlspecialchars($_SESSION["csrf_token"]) ?>"
+            >
 
-            <p>Business information could not be found.</p>
+            <label for="business_name">
+                Business Name:
+            </label>
 
-            <?php
+            <input
+                type="text"
+                id="business_name"
+                name="business_name"
+                value="<?= htmlspecialchars($business["business_name"]) ?>"
+                maxlength="100"
+                required
+            >
 
-        }
+            <button type="submit">
+                Save Changes
+            </button>
 
-        ?>
+        </form>
 
     </section>
-
 
     <div class="bottom-links">
 
@@ -118,4 +185,3 @@ $stmt->close();
 </body>
 
 </html>
-```
