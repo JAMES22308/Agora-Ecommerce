@@ -1,60 +1,38 @@
-```php
+
 <?php
 
-session_start();
-
+require_once "../includes/auth.php";
 require_once "../config/database.php";
+
+// Only Business Admins can access this page
+requireRole(["business_admin"]);
 
 $database = new Database();
 $conn = $database->connection;
 
+// Get the logged-in admin's business ID
+$businessId = (int) ($_SESSION["business_id"] ?? 0);
 
-/* Check if user is logged in */
-
-if (!isset($_SESSION["user_id"])) {
-
-    header("Location: ../public/login.php");
-    exit;
-
+if ($businessId <= 0) {
+    http_response_code(403);
+    exit("No business is associated with this account.");
 }
 
-
-/* Only Business Admins can access this page */
-
-if ($_SESSION["role"] != "business_admin") {
-
-    echo "Only Business Account Administrators can access this page.";
-    exit;
-
-}
-
-
-/* Get the Business Admin's business ID */
-
-$businessId = $_SESSION["business_id"];
-
-
-/* Get business name */
-
+// Get business information
 $sql = "SELECT business_name
         FROM businesses
         WHERE business_id = ?";
 
 $stmt = $conn->prepare($sql);
-
 $stmt->bind_param("i", $businessId);
-
 $stmt->execute();
 
 $result = $stmt->get_result();
-
 $business = $result->fetch_assoc();
 
 $stmt->close();
 
-
-/* Get users belonging to this business */
-
+// Get users belonging to this business
 $sql = "SELECT
             user_id,
             full_name,
@@ -65,9 +43,7 @@ $sql = "SELECT
         ORDER BY full_name";
 
 $stmt = $conn->prepare($sql);
-
 $stmt->bind_param("i", $businessId);
-
 $stmt->execute();
 
 $result = $stmt->get_result();
@@ -80,6 +56,8 @@ $result = $stmt->get_result();
 <head>
 
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Business Users - Agora</title>
 
@@ -97,7 +75,6 @@ $result = $stmt->get_result();
 
 </header>
 
-
 <main>
 
     <section class="role-box">
@@ -113,17 +90,11 @@ $result = $stmt->get_result();
 
         <?php } ?>
 
-
         <h3>Users in Your Business</h3>
 
+        <?php if ($result->num_rows > 0) { ?>
 
-        <?php
-
-        if ($result->num_rows > 0) {
-
-            while ($user = $result->fetch_assoc()) {
-
-                ?>
+            <?php while ($user = $result->fetch_assoc()) { ?>
 
                 <div class="welcome">
 
@@ -143,26 +114,15 @@ $result = $stmt->get_result();
 
                 </div>
 
-                <?php
+            <?php } ?>
 
-            }
+        <?php } else { ?>
 
-        } else {
+            <p>No users were found for this business.</p>
 
-            ?>
-
-            <p>
-                No users were found for this business.
-            </p>
-
-            <?php
-
-        }
-
-        ?>
+        <?php } ?>
 
     </section>
-
 
     <div class="bottom-links">
 
@@ -181,4 +141,9 @@ $result = $stmt->get_result();
 </body>
 
 </html>
-```
+
+<?php
+
+$stmt->close();
+
+?>
