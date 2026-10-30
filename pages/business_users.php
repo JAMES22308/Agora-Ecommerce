@@ -80,6 +80,17 @@ $result = $stmt->get_result();
     <section class="role-box">
 
         <h2>Business Users</h2>
+        <p>
+            <a href="add_business_user.php">
+                + Add New User
+            </a>
+        </p>
+
+        <p>
+            <a href="edit_business_user.php?id=<?= (int) $user["user_id"] ?>">
+                Edit User
+            </a>
+        </p>
 
         <?php if ($business) { ?>
 
