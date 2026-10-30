@@ -1,4 +1,4 @@
-```php
+
 <?php
 
 $storeName = "Agora";
@@ -80,4 +80,4 @@ $tagline = "Digital Marketplace";
 </body>
 
 </html>
-```
+
