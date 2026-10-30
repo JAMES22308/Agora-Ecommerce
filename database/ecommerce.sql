@@ -174,3 +174,30 @@ GROUP BY
     users.user_id,
     users.full_name
 ORDER BY average_price DESC;
+
+
+
+
+
+
+
+UPDATE users
+SET password = CASE email
+
+    WHEN 'sam@nzmega.co.nz' THEN '$2y$12$luwFLwHWmxKxjN6FPX422O3.970m/YzwQvOyCHBc6e1piHhqhHtPm'
+
+    WHEN 'james@nzmega.co.nz' THEN '$2y$12$pYwSBBDf5RJh72KlwPrkAe9spfOYkaZzd5gKFItYY1EqYYVz30pH.'
+
+    WHEN 'lisa@foxbutcher.co.nz' THEN 'P$2y$12$GriMCWjdfO6V/rgZ9qdk9eVzyHC3DyTR9.NYkq1yJ.bRUSPtjZuxOASTE_LISA_HASH_HERE'
+
+    WHEN 'simon@agora.co.nz' THEN '$2y$12$IsqlzrClgr/cO0V2oaqx..Kbp1hTWOf7OXXQuLLsS7Bt6I5t0MOcm'
+
+    ELSE password
+
+END
+WHERE email IN (
+    'sam@nzmega.co.nz',
+    'james@nzmega.co.nz',
+    'lisa@foxbutcher.co.nz',
+    'simon@agora.co.nz'
+);

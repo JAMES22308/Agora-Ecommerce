@@ -1,7 +1,9 @@
 
 <?php
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once "../config/database.php";
 
@@ -10,50 +12,66 @@ $conn = $database->connection;
 
 $message = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+    // Get and validate user input
+    $email = trim($_POST["email"] ?? "");
+    $password = $_POST["password"] ?? "";
 
-    // Find the user from the database
-    $sql = "SELECT * FROM users WHERE email = ?";
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $password === "") {
 
-    $stmt = $conn->prepare($sql);
+        $message = "Invalid email or password.";
 
-    $stmt->bind_param("s", $email);
+    } else {
 
-    $stmt->execute();
+        // Find the user from the database
+        $sql = "SELECT
+                    user_id,
+                    full_name,
+                    email,
+                    password,
+                    role,
+                    business_id
+                FROM users
+                WHERE email = ?";
 
-    $result = $stmt->get_result();
+        $stmt = $conn->prepare($sql);
 
-    if ($result->num_rows == 1) {
+        $stmt->bind_param("s", $email);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
 
         $user = $result->fetch_assoc();
 
-        // Check the password stored in the database
-        if ($password == $user["password"]) {
+        // Verify the submitted password against the stored hash
+        if ($user && password_verify($password, $user["password"])) {
 
+            // Regenerate session ID after successful login
+            session_regenerate_id(true);
+
+            // Store user information in the session
             $_SESSION["user_id"] = $user["user_id"];
             $_SESSION["full_name"] = $user["full_name"];
             $_SESSION["role"] = $user["role"];
             $_SESSION["business_id"] = $user["business_id"];
 
+            $stmt->close();
+
+            // Redirect to the dashboard
             header("Location: dashboard.php");
             exit;
 
         } else {
 
-            $message = "Incorrect password.";
+            // Use a generic message for security
+            $message = "Invalid email or password.";
 
         }
 
-    } else {
-
-        $message = "Account not found.";
-
+        $stmt->close();
     }
-
-    $stmt->close();
 }
 
 ?>
@@ -83,24 +101,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </header>
 
-
     <main>
 
         <section class="login-card">
 
             <h2>Login to Agora</h2>
 
+            <?php if ($message !== "") { ?>
 
-            <?php
+                <p class="message">
+                    <?= htmlspecialchars($message) ?>
+                </p>
 
-            if ($message != "") {
-
-                echo "<p class='message'>" . htmlspecialchars($message) . "</p>";
-
-            }
-
-            ?>
-
+            <?php } ?>
 
             <form method="POST">
 
@@ -112,9 +125,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     type="email"
                     id="email"
                     name="email"
+                    value="<?= htmlspecialchars($_POST["email"] ?? "") ?>"
                     required
                 >
-
 
                 <label for="password">
                     Password:
@@ -127,13 +140,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     required
                 >
 
-
                 <button type="submit">
                     Login
                 </button>
 
             </form>
-
 
             <div class="links">
 
@@ -154,4 +165,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
-
